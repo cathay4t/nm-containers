@@ -11,6 +11,7 @@ ExecStart=/usr/sbin/sysctl -w net.ipv6.conf.all.disable_ipv6=0\n\
 [Install]\n\
 WantedBy=multi-user.target' > /etc/systemd/system/enable_ipv6.service
 
-RUN systemctl enable dbus systemd-udevd NetworkManager enable_ipv6
+RUN systemctl enable dbus systemd-udevd NetworkManager enable_ipv6 \
+    NetworkManager-wait-online
 
 CMD ["/usr/sbin/init"]
