@@ -1,0 +1,11 @@
+#!/bin/bash
+IMAGE="networkmanager/c8s-nm-ci:latest"
+NAME="c8s-nm-ci"
+
+CONTAINER_ID=`
+    sudo podman run --privileged -d \
+        --hostname $NAME \
+        $IMAGE `
+
+sudo podman exec -it $CONTAINER_ID /bin/bash
+sudo podman rm $CONTAINER_ID -f
