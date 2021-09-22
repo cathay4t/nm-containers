@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGE="networkmanager/c8s-nm-ci:latest"
+IMAGE="quay.io/networkmanager/c8s-nm-ci:latest"
 NAME="c8s-nm-ci"
 
 CONTAINER_ID=`
