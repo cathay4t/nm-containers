@@ -1,6 +1,6 @@
 FROM quay.io/networkmanager/c8s-nm
 
-RUN echo "2021-09-13" > /build_time
+RUN echo "2022-02-11" > /build_time
 
 RUN dnf -y install python3-pip git python3-pexpect python3-pyyaml \
     NetworkManager-config-server
