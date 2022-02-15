@@ -32,7 +32,11 @@ function start_dhcp_server() {
     ip netns exec $NETNS ip link set $DHCP_SRV_EP_NIC up
     ip netns exec $NETNS ip link set $DHCP_SRV_NIC up
     ip netns exec $NETNS ip addr add ${DHCP_SRV_IP}/24 dev $DHCP_SRV_NIC
+    # systemd does not allows fork in service. so this is the last comment will
+    # keep running foreground as service.
     ip netns exec $NETNS dnsmasq \
+        --keep-in-foreground \
+        --no-daemon \
         --pid-file=$DNSMASQ_PID_FILE \
         --dhcp-leasefile=/tmp/dhcp_inbr.lease \
         --listen-address=$DHCP_SRV_IP \
