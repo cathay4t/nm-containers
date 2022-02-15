@@ -2,6 +2,8 @@
 IMAGE="quay.io/networkmanager/c8s-nm-ci:latest"
 NAME="c8s-nm-ci"
 
+sudo podman pull $IMAGE
+
 CONTAINER_ID=`
     sudo podman run --privileged -d \
         --hostname $NAME \

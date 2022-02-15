@@ -2,8 +2,10 @@ FROM quay.io/networkmanager/c8s-nm
 
 RUN echo "2022-02-11" > /build_time
 
+RUN dnf -y install epel-release
+
 RUN dnf -y install python3-pip git python3-pexpect python3-pyyaml \
-    NetworkManager-config-server
+    NetworkManager-config-server python3-pyroute2 dnsmasq
 
 RUN cd /root && git clone \
     https://gitlab.freedesktop.org/NetworkManager/NetworkManager-ci.git
@@ -13,21 +15,12 @@ RUN pip3 install --user behave behave behave_html_formatter pyte && \
     > ~/.behaverc && \
     ln -s /root/.local/bin/behave /usr/bin
 
-RUN echo $'#!/bin/bash\n\
-ip netns add vethsetup\n\
-for X in $(seq 1 9); do\n\
-    ip link add eth${X} type veth peer name eth${X}p\n\
-    ip link set eth${X}p netns vethsetup\n\
-    ip netns exec vethsetup ip link set eth${X}p up\n\
-    ip link set eth${X} up\n\
-    nmcli device set eth${X} managed yes\n\
-done\n\
-' > /usr/bin/nm_ci_env_setup && chmod +x /usr/bin/nm_ci_env_setup
+COPY nm_ci_env_setup.sh /usr/bin/nm_ci_env_setup.sh
 
 RUN echo $'[Unit]\n\
 Description=Setup the container environment for NMCI\n\
 [Service]\n\
-ExecStart=/usr/bin/nm_ci_env_setup\n\
+ExecStart=/usr/bin/nm_ci_env_setup.sh\n\
 [Install]\n\
 WantedBy=multi-user.target' > /etc/systemd/system/nm_ci_env_setup.service
 
