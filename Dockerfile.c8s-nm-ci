@@ -2,10 +2,12 @@ FROM quay.io/networkmanager/c8s-nm
 
 RUN echo "2022-02-11" > /build_time
 
-RUN dnf -y install epel-release
-
-RUN dnf -y install python3-pip git python3-pexpect python3-pyyaml \
-    NetworkManager-config-server python3-pyroute2 dnsmasq
+RUN dnf -y install dnf-plugins-core epel-release && \
+    dnf config-manager --set-enabled powertools && \
+    dnf copr enable nmstate/ovs-el8 -y && \
+    dnf -y install python3-pip git python3-pexpect python3-pyyaml \
+        openvswitch2.13 NetworkManager NetworkManager-ovs \
+        NetworkManager-config-server python3-pyroute2 dnsmasq \
 
 RUN cd /root && git clone \
     https://gitlab.freedesktop.org/NetworkManager/NetworkManager-ci.git
@@ -32,6 +34,6 @@ RUN echo $'To run the NMCI test:\n\
 RUN echo $'\n\
 cat /etc/motd' >> /root/.bashrc
 
-RUN systemctl enable nm_ci_env_setup
+RUN systemctl enable nm_ci_env_setup && systemctl enable openvswitch
 
 CMD ["/usr/sbin/init"]
