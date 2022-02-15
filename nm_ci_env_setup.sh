@@ -59,7 +59,6 @@ function create_veth_and_attach_bridge() {
         ip netns exec $NETNS ip link set eth${X}p type bridge_slave priority 5
         ip netns exec $NETNS ip link set eth${X}p up
         ip link set eth${X} up
-        nmcli device set eth${X} managed yes
     done
 }
 
