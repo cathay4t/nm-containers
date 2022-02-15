@@ -7,7 +7,7 @@ RUN dnf -y install dnf-plugins-core epel-release && \
     dnf copr enable nmstate/ovs-el8 -y && \
     dnf -y install python3-pip git python3-pexpect python3-pyyaml \
         openvswitch2.13 NetworkManager NetworkManager-ovs \
-        NetworkManager-config-server python3-pyroute2 dnsmasq \
+        NetworkManager-config-server python3-pyroute2 dnsmasq
 
 RUN cd /root && git clone \
     https://gitlab.freedesktop.org/NetworkManager/NetworkManager-ci.git
