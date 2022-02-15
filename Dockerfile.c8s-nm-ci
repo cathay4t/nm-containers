@@ -6,7 +6,7 @@ RUN dnf -y install dnf-plugins-core epel-release && \
     dnf config-manager --set-enabled powertools && \
     dnf copr enable nmstate/ovs-el8 -y && \
     dnf -y install sudo python3-pip git python3-pexpect python3-pyyaml \
-        openvswitch2.13 NetworkManager NetworkManager-ovs \
+        openvswitch2.13 NetworkManager NetworkManager-ovs iputils tcpdump \
         NetworkManager-config-server python3-pyroute2 dnsmasq && \
     dnf clean all
 
