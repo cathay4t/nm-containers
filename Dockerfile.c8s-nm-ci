@@ -1,6 +1,6 @@
 FROM quay.io/networkmanager/c8s-nm
 
-RUN echo "2022-02-11" > /build_time
+RUN echo "2022-02-22" > /build_time
 
 RUN dnf -y install dnf-plugins-core epel-release && \
     dnf config-manager --set-enabled powertools && \
