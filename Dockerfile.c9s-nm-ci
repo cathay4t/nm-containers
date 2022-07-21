@@ -1,11 +1,11 @@
-FROM quay.io/centos/centos:stream8
+FROM quay.io/centos/centos:stream9
 
 RUN echo "2022-07-21" > /build_time
 
 RUN dnf -y install \
-    dnf-plugins-core epel-release procps-ng iproute systemd-udev && \
-    dnf config-manager --set-enabled powertools && \
-    dnf -y copr enable nmstate/ovs-el8 && \
+        dnf-plugins-core epel-release procps-ng iproute systemd-udev \
+        centos-release-nfv-openvswitch && \
+    dnf config-manager --set-enabled crb && \
     dnf -y copr enable nmstate/nm-build-deps &&
     dnf -y install sudo python3-pip git python3-pexpect python3-pyyaml \
         openvswitch2.13 iputils tcpdump rpm-build \
@@ -25,15 +25,11 @@ RUN pip3 install --user behave behave behave_html_formatter pyte && \
     > ~/.behaverc && \
     ln -s /root/.local/bin/behave /usr/bin
 
-RUN echo $'To run the NMCI test:\n\
-    cd /root/NetworkManager-ci\n\
-    behave -f html --stop ./features/scenarios/vrf.feature\n\
-' >> /etc/motd
+RUN echo $'TODO\n' >> /etc/motd
 
 RUN echo $'\n\
 cat /etc/motd' >> /root/.bashrc
 
-RUN systemctl enable dbus systemd-udevd NetworkManager enable_ipv6 \
-    NetworkManager-wait-online openvswitch
+RUN systemctl enable dbus systemd-udevd enable_ipv6 openvswitch
 
 CMD ["/usr/sbin/init"]
